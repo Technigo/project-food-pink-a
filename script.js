@@ -11,9 +11,19 @@ const container = document.querySelector(".container")
 
 const showPrice = selectedPrice => {
   container.innerHTML = ""
-  restaurants.filter(item => {
-    if (item.priceRange === selectedPrice) {
-      container.innerHTML += `<div class="boxes"><h2>${item.name}</h2><p>${item.cost}</p><p>${item.rating}</p><img src="${item.image}"><p>${item.address}</p></div>`
+  restaurants.filter(el => {
+    if (el.priceRange === selectedPrice) {
+      container.innerHTML += `<div class="boxes"><img src="${el.image}">
+    <h2>${el.name}</h2> 
+ 
+    <div class="vendor-info">
+   <img id="dollar" src="./Images/${el.dollar}.png">
+
+   <div><img id="star" src="./Images/rating.png">${el.rating}/5</div>
+    </div>
+    Average Price for two $${el.cost}
+    <p>${el.address}</p>
+</div>`
     }
   })
 }
@@ -69,36 +79,6 @@ fetch(url, { headers: { "user-key": apiKey } })
     highPrice.addEventListener("click", () => {
       showPrice("high")
     })
-
-    //json.restaurants.forEach(el => {
-    /* 'const showLowPrice = () => {
-  if (price <= 40) {
-    document.querySelector(
-      ".container"
-    ).innerHTML += `<div class="boxes"><h2>${el.restaurant.name}</h2><p>${el.restaurant.average_cost_for_two}</p><p>${el.restaurant.user_rating.aggregate_rating}</p><img src="${el.restaurant.featured_image}"><p>${el.restaurant.location.address}</p></div>`
-  }
-} */
-    /* const showMediumPrice = () => {
-  if (price >= 41 && price <= 59) {
-    document.querySelector(
-      ".container"
-    ).innerHTML += `<div class="boxes"><h2>${el.restaurant.name}</h2><p>${el.restaurant.average_cost_for_two}</p><p>${el.restaurant.user_rating.aggregate_rating}</p><img src="${el.restaurant.featured_image}"><p>${el.restaurant.location.address}</p></div>`
-  }
-} */
-    /* const showHighPrice = () => {
-  if (price >= 60) {
-    document.querySelector(
-      ".container"
-    ).innerHTML += `<div class="boxes"><h2>${el.restaurant.name}</h2><p>${el.restaurant.average_cost_for_two}</p><p>${el.restaurant.user_rating.aggregate_rating}</p><img src="${el.restaurant.featured_image}"><p>${el.restaurant.location.address}</p></div>`
-  }
-} */
-    /* document.getElementById("lowPrice").addEventListener("click", showLowPrice)
-document
-  .getElementById("mediumPrice")
-  .addEventListener("click", showMediumPrice)
-document.getElementById("highPrice").addEventListener("click", showHighPrice)' */
-
-    //})
 
     // Adding event listeners to buttons
     document.getElementById("priceUp").addEventListener("click", () => {
@@ -168,14 +148,5 @@ const printRestaurants = (arr = restaurants) => {
     Average Price for two $${el.cost}
     <p>${el.address}</p>
 </div>`
-
-    // container.innerHTML += `
-    //   <div class="boxes">
-    //     <h2>${el.name}</h2>
-    //     <p>${el.cost}</p>
-    //     <p>${el.rating}</p>
-    //     <img src="${el.image}">
-    //     <p>${el.address}</p>
-    //   </div>`
   })
 }
