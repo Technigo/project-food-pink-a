@@ -9,51 +9,32 @@ const url = `https://developers.zomato.com/api/v2.1/search?entity_id=${cityId}&e
 const restaurants = []
 const container = document.querySelector('.container')
 
-
-const container = document.querySelector('.container')
+const showPrice = (selectedPrice) => {
+    container.innerHTML = ''
+    restaurants.filter(item => {
+        if (item.priceRange === selectedPrice) {
+            container.innerHTML += `<div class="boxes"><h2>${item.name}</h2><p>${item.cost}</p><p>${item.rating}</p><img src="${item.image}"><p>${item.address}</p></div>`
+        }
+    })
+}
 
 //Fetching data from ZAMATO API and creating local copy of used only inforamtions for every restaurant
 fetch(url, { headers: { "user-key": apiKey } })
   .then(res => res.json())
   .then(json => {
-    console.log(json);
 
-    // let restaurant = json.restaurants
-
-   
-
-
-//     json.restaurants.forEach(el => {
-        
-
-//         const price = el.restaurant.average_cost_for_two
-//         const showLowPrice = () => {
-//             if (price <= 40) {
-//                 document.querySelector('.container').innerHTML += `<div class="boxes"><h2>${el.restaurant.name}</h2><p>${el.restaurant.average_cost_for_two}</p><p>${el.restaurant.user_rating.aggregate_rating}</p><img src="${el.restaurant.featured_image}"><p>${el.restaurant.location.address}</p></div>`
-//             }
-//         }
-//         const showMediumPrice = () => {
-//             if (price >= 41 && price <= 59) {
-//                 document.querySelector('.container').innerHTML += `<div class="boxes"><h2>${el.restaurant.name}</h2><p>${el.restaurant.average_cost_for_two}</p><p>${el.restaurant.user_rating.aggregate_rating}</p><img src="${el.restaurant.featured_image}"><p>${el.restaurant.location.address}</p></div>`
-//             }
-//         }
-//         const showHighPrice = () => {
-//             if (price >= 60 ) {
-//                 document.querySelector('.container').innerHTML += `<div class="boxes"><h2>${el.restaurant.name}</h2><p>${el.restaurant.average_cost_for_two}</p><p>${el.restaurant.user_rating.aggregate_rating}</p><img src="${el.restaurant.featured_image}"><p>${el.restaurant.location.address}</p></div>`
-//             }
-//         }
-// document.getElementById("lowPrice").addEventListener("click", showLowPrice)
-// document.getElementById("mediumPrice").addEventListener("click", showMediumPrice)
-// document.getElementById("highPrice").addEventListener("click", showHighPrice)
-
-        // console.log(el.restaurant.price_range, el.restaurant.average_cost_for_two)
-    // })
-    
-
-    
-  });
     console.log(json)
     json.restaurants.forEach(el => {
+        let range = el.restaurant.price_range
+        if (range <= 2){ 
+           range = "low"
+        }
+        if (range === 3) {
+            range = "medium"
+        }
+        if( range > 3) {
+            range = "high"
+        }
       restaurants.push({
         name: el.restaurant.name,
         cost: el.restaurant.average_cost_for_two,
@@ -62,39 +43,87 @@ fetch(url, { headers: { "user-key": apiKey } })
         address: el.restaurant.location.address,
         delivery: el.restaurant.has_online_delivery,
         booking: el.restaurant.has_table_booking,
-        priceRange: el.restaurant.price_range
+        priceRange: range
       })
+      
     })
+    console.log(restaurants)
+
+    //FILTER ON PRICE RANGE
+
+    lowPrice.addEventListener("click", () => {
+     showPrice("low")
+   })
+    mediumPrice.addEventListener("click", () => {
+        showPrice("medium")
+      })
+    highPrice.addEventListener("click", () => {
+        showPrice("high")
+      })
+
+    
+    
+
+    json.restaurants.forEach(el => {
+        
+
+
+        const showLowPrice = () => {
+            if (price <= 40) {
+                document.querySelector('.container').innerHTML += `<div class="boxes"><h2>${el.restaurant.name}</h2><p>${el.restaurant.average_cost_for_two}</p><p>${el.restaurant.user_rating.aggregate_rating}</p><img src="${el.restaurant.featured_image}"><p>${el.restaurant.location.address}</p></div>`
+            }
+        }
+        const showMediumPrice = () => {
+            if (price >= 41 && price <= 59) {
+                document.querySelector('.container').innerHTML += `<div class="boxes"><h2>${el.restaurant.name}</h2><p>${el.restaurant.average_cost_for_two}</p><p>${el.restaurant.user_rating.aggregate_rating}</p><img src="${el.restaurant.featured_image}"><p>${el.restaurant.location.address}</p></div>`
+            }
+        }
+        const showHighPrice = () => {
+            if (price >= 60 ) {
+                document.querySelector('.container').innerHTML += `<div class="boxes"><h2>${el.restaurant.name}</h2><p>${el.restaurant.average_cost_for_two}</p><p>${el.restaurant.user_rating.aggregate_rating}</p><img src="${el.restaurant.featured_image}"><p>${el.restaurant.location.address}</p></div>`
+            }
+        }
+document.getElementById("lowPrice").addEventListener("click", showLowPrice)
+document.getElementById("mediumPrice").addEventListener("click", showMediumPrice)
+document.getElementById("highPrice").addEventListener("click", showHighPrice)
+
+        console.log(el.restaurant.price_range, el.restaurant.average_cost_for_two)
+    })
+    
+
+    
+  });
+    
     // Adding event listeners to buttons
-    document.getElementById("priceUp").addEventListener("click", () => {
-      sortUp("cost")
-    })
-    document.getElementById("priceDown").addEventListener("click", () => {
-      sortDown("cost")
-    })
-    document.getElementById("nameUp").addEventListener("click", () => {
-      sortUp("name")
-    })
-    document.getElementById("nameDown").addEventListener("click", () => {
-      sortDown("name")
-    })
-    document.getElementById("rateUp").addEventListener("click", () => {
-      sortUp("rating")
-    })
-    document.getElementById("rateDown").addEventListener("click", () => {
-      sortDown("rating")
-    })
-    document.getElementById("delivery").addEventListener("click", () => {
-      filterOptions("delivery")
-    })
-    document.getElementById("bookOnline").addEventListener("click", () => {
-      filterOptions("booking")
-    })
-    document.getElementById("clearFilters").addEventListener("click", () => {
-      printRestaurants()
-    })
-    printRestaurants()
-  })
+//     document.getElementById("priceUp").addEventListener("click", () => {
+//       sortUp("cost")
+//     })
+//     document.getElementById("priceDown").addEventListener("click", () => {
+//       sortDown("cost")
+//     })
+//     document.getElementById("nameUp").addEventListener("click", () => {
+//       sortUp("name")
+//     })
+//     document.getElementById("nameDown").addEventListener("click", () => {
+//       sortDown("name")
+//     })
+//     document.getElementById("rateUp").addEventListener("click", () => {
+//       sortUp("rating")
+//     })
+//     document.getElementById("rateDown").addEventListener("click", () => {
+//       sortDown("rating")
+//     })
+//     document.getElementById("delivery").addEventListener("click", () => {
+//       filterOptions("delivery")
+//     })
+//     document.getElementById("bookOnline").addEventListener("click", () => {
+//       filterOptions("booking")
+//     })
+//     document.getElementById("clearFilters").addEventListener("click", () => {
+//       printRestaurants()
+//     })
+//     printRestaurants()
+//   })
 
 
 //Universal filter function for boolean values (0/1 options)
@@ -130,3 +159,4 @@ const printRestaurants = (arr = restaurants) => {
       </div>`
   })
 }
+
