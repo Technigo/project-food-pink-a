@@ -13,7 +13,7 @@ fetch(url, { headers: { "user-key": apiKey } })
     console.log(json);
 
     json.restaurants.forEach(el => {
-        document.querySelector('.container').innerHTML += `<div class="boxes"><h2>${el.restaurant.name}</h2><p>${el.restaurant.average_cost_for_two}</p><p>${el.restaurant.user_rating.aggregate_rating}</p><img src="${el.restaurant.featured_image}"><p>${el.restaurant.location.address}</p></div>`
+        document.querySelector('.container').innerHTML += `<div class="boxes"><img src="${el.restaurant.featured_image}"><h2>${el.restaurant.name}</h2><p>Average cost ${el.restaurant.average_cost_for_two}</p><p>Rating ${el.restaurant.user_rating.aggregate_rating}</p><p>${el.restaurant.location.address}</p></div>`
     })
     
   });
